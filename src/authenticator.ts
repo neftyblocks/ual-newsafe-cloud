@@ -70,6 +70,17 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     return this.users.length > 0;
   }
 
+  shouldInvalidateAfter = () => {
+    const payload = this.getJwtPayload();
+    let invalidateAfter = 0;
+    if (payload) {
+      const expires = new Date(payload.config.expires);
+      const diffInSeconds = (expires.getTime() - Date.now()) / 1000;
+      invalidateAfter = Math.max(0, diffInSeconds);
+    }
+    return invalidateAfter;
+  };
+
   async shouldRequestAccountName() {
     return false;
   }
@@ -168,6 +179,15 @@ export class NewsafeCloudAuthenticator extends Authenticator {
 
   private getJwtFromLocalStorage() {
     return localStorage.getItem(NEWSTACK_LOCAL_STORAGE_KEY);
+  }
+
+  private getJwtPayload() {
+    const jwt = this.getJwtFromLocalStorage();
+    if (!jwt) {
+      return null;
+    }
+    const payload = jwt.split(".")[1];
+    return JSON.parse(atob(payload));
   }
 
   private getAccountNameFromLocalStorage() {

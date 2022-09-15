@@ -18,8 +18,8 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [resolve(), common(), typescript()],
-    external: ["ohmyfetch"],
+    plugins: [typescript()],
+    external: [/univeral-authenticator-library\/*/, "ohmyfetch"],
   },
   {
     input: "src/index.ts",

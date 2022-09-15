@@ -1,6 +1,6 @@
 {
   "name": "ual-newsafe-cloud",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.1",
   "description": "UAL for newsafe cloud wallet",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -9,7 +9,8 @@
   "author": "NeftyBlocks",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
