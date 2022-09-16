@@ -32,17 +32,17 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     return Promise.resolve();
   }
 
-  reset() {
+  reset = () => {
     this.users = [];
     localStorage.removeItem(NEWSTACK_LOCAL_STORAGE_KEY);
     localStorage.removeItem(NEWSTACK_ACCOUNT_NAME);
-  }
+  };
   isErrored() {
     return false;
   }
-  getOnboardingLink() {
+  getOnboardingLink = () => {
     return this.authUrl;
-  }
+  };
   getError() {
     return null;
   }
@@ -50,7 +50,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     return false;
   }
   getName() {
-    return "Newstack Cloud";
+    return "Newsafe Cloud";
   }
 
   getStyle = () => {
@@ -62,13 +62,13 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     };
   };
 
-  shouldRender() {
+  shouldRender = () => {
     return true;
-  }
+  };
 
-  shouldAutoLogin() {
+  shouldAutoLogin = () => {
     return this.users.length > 0;
-  }
+  };
 
   shouldInvalidateAfter = () => {
     const payload = this.getJwtPayload();
@@ -85,12 +85,19 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     return false;
   }
 
-  async login(): Promise<User[]> {
+  login = async (): Promise<User[]> => {
     const isLoggedIn = this.isLoggedIn();
     const accountName = this.getAccountNameFromLocalStorage();
+    debugger;
     if (isLoggedIn && accountName) {
-      const user = new NewstackUser(accountName, this.chainId);
+      const { chainId, authUrl } = this;
+      const user = new NewstackUser({
+        accountName,
+        chainId,
+        authUrl,
+      });
       this.users = [user];
+      debugger;
       return this.users;
     }
     await this.waitForAuthFlow();
@@ -101,21 +108,21 @@ export class NewsafeCloudAuthenticator extends Authenticator {
       this.users = [];
     }
     return this.users;
-  }
+  };
 
-  async logout() {
+  logout = async () => {
     this.reset();
-  }
+  };
 
   requiresGetKeyConfirmation() {
     return false;
   }
 
-  private isLoggedIn() {
+  private isLoggedIn = () => {
     return !!this.getJwtFromLocalStorage();
-  }
+  };
 
-  private async waitForAuthFlow() {
+  private waitForAuthFlow = async () => {
     return new Promise<void>((res, rej) => {
       this.loginResolve = res;
       this.loginReject = rej;
@@ -123,22 +130,22 @@ export class NewsafeCloudAuthenticator extends Authenticator {
       const referer = encodeURIComponent(window.origin);
       const redirectUrl = encodeURIComponent(`${window.origin}/newstack/login`);
       window.open(
-        `${this.authUrl}?requestor=${requestor}&referer=${referer}&redirectUrl=${redirectUrl}`,
+        `${this.authUrl}/explore?requestor=${requestor}&referer=${referer}&redirectUrl=${redirectUrl}`,
         "login"
       );
       window.addEventListener("message", this.processMessage);
       this.timeoutRef = setTimeout(this.onTimeout, 60000);
     });
-  }
+  };
 
   private processMessage = (event: MessageEvent) => {
     if (event.origin === window.location.origin) {
       const token = event.data?.["newstack_login"];
       if (token) {
         this.setJwtToLocalStorage(token);
+        this.loginResolve?.();
+        this.afterAuthFlow();
       }
-      this.loginResolve?.();
-      this.afterAuthFlow();
     }
   };
 
@@ -158,13 +165,18 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     this.timeoutRef = null;
   };
 
-  private async getUser(): Promise<User> {
+  private getUser = async (): Promise<User> => {
     const data = await this.fetch<NGUserResponse>(
       `${this.newgraphUrl}/creator/user/current`
     );
     this.setAccountNameToLocalStorage(data.username);
-    return new NewstackUser(data.username, this.chainId);
-  }
+    const { chainId, authUrl } = this;
+    return new NewstackUser({
+      accountName: data.username,
+      chainId,
+      authUrl,
+    });
+  };
 
   private fetch<T>(request: RequestInfo, opts?: FetchOptions): Promise<T> {
     const jwt = this.getJwtFromLocalStorage();

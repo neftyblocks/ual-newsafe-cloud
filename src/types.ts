@@ -6,6 +6,12 @@ export interface NewstackAuthenticatorOptions {
   redirectUrl: string;
 }
 
+export interface NewstackUserParams {
+  accountName: string;
+  chainId: string;
+  authUrl: string;
+}
+
 export interface NGUserResponse {
   id: string;
   created: string;

@@ -13,13 +13,13 @@ export default [
         sourcemap: true,
       },
       {
-        file: "dist/index.mjs",
+        file: "dist/index.esm.js",
         format: "esm",
         sourcemap: true,
       },
     ],
     plugins: [typescript()],
-    external: [/univeral-authenticator-library\/*/, "ohmyfetch"],
+    external: [/universal-authenticator-library\/*/, "ohmyfetch"],
   },
   {
     input: "src/index.ts",
