@@ -88,7 +88,6 @@ export class NewsafeCloudAuthenticator extends Authenticator {
   login = async (): Promise<User[]> => {
     const isLoggedIn = this.isLoggedIn();
     const accountName = this.getAccountNameFromLocalStorage();
-    debugger;
     if (isLoggedIn && accountName) {
       const { chainId, authUrl } = this;
       const user = new NewstackUser({
@@ -97,7 +96,6 @@ export class NewsafeCloudAuthenticator extends Authenticator {
         authUrl,
       });
       this.users = [user];
-      debugger;
       return this.users;
     }
     await this.waitForAuthFlow();
