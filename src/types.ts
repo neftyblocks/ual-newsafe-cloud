@@ -1,6 +1,7 @@
 export interface NewstackAuthenticatorOptions {
   appId: string;
   authUrl: string;
+  signUrl: string;
   newgraphUrl: string;
   daoDomain: string;
   redirectUrl: string;
@@ -65,4 +66,51 @@ export interface NGUserResponse {
   facebook: string;
   facebookId: string;
   youtubeId: string;
+}
+
+export interface NewsafeJwtPayload {
+  credential: {
+    origin: string;
+  };
+  identity: {
+    username: string;
+  };
+  requestor: string;
+  scopes: string[];
+  config: {
+    created: string;
+    expires: string;
+    renewable: boolean;
+  };
+  request: {
+    referer: string;
+    appOwner: string;
+    redirectUrl: string;
+    scopes: string[];
+  };
+  authority: string;
+  version: string;
+  iat: number;
+}
+
+export interface NewsafeTransactionResultPayload {
+  transaction_id: string;
+  processed: {
+    id: string;
+    block_num: number;
+    block_time: string;
+    producer_block_id: unknown;
+    receipt: {
+      status: string;
+      cpu_usage_us: number;
+      net_usage_words: number;
+    };
+    elapsed: number;
+    net_usage: number;
+    scheduled: boolean;
+    action_traces: unknown;
+    account_ram_delta: unknown;
+    except: unknown;
+    error_code: unknown;
+  };
 }
