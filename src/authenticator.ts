@@ -22,7 +22,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
   signUrl: string;
   newgraphUrl: string;
   daoDomain: string;
-  redirectUrl: string;
+  redirectPath: string;
   users: User[] = [];
   loginResolve: (() => void) | null = null;
   loginReject: (() => void) | null = null;
@@ -35,7 +35,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
     this.authUrl = options.authUrl;
     this.signUrl = options.signUrl;
     this.daoDomain = options.daoDomain;
-    this.redirectUrl = options.redirectUrl;
+    this.redirectPath = options.redirectPath;
     this.newgraphUrl = options.newgraphUrl;
     this.chainId = chains?.[0]?.chainId;
   }
@@ -138,7 +138,9 @@ export class NewsafeCloudAuthenticator extends Authenticator {
       this.loginReject = rej;
       const requestor = encodeURIComponent(this.daoDomain);
       const referer = encodeURIComponent(window.origin);
-      const redirectUrl = encodeURIComponent(`${window.origin}/newstack/login`);
+      const redirectUrl = encodeURIComponent(
+        `${window.origin}${this.redirectPath}`
+      );
       window.open(
         `${this.authUrl}/explore?requestor=${requestor}&referer=${referer}&redirectUrl=${redirectUrl}`,
         "login"

@@ -4,7 +4,7 @@ export interface NewstackAuthenticatorOptions {
   signUrl: string;
   newgraphUrl: string;
   daoDomain: string;
-  redirectUrl: string;
+  redirectPath: string;
 }
 
 export interface NewstackUserParams {
