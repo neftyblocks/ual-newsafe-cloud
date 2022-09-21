@@ -19,7 +19,7 @@ export function getJwtPayload() {
 
 export function getJwtExpirationDate() {
   const payload = getJwtPayload();
-  if (payload) {
+  if (payload?.config?.expires) {
     return new Date(payload.config.expires);
   }
   return null;

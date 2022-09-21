@@ -10,6 +10,7 @@ import {
 import { NewstackUser } from "./user";
 import {
   getAccountNameFromLocalStorage,
+  getJwtExpirationDate,
   getJwtFromLocalStorage,
   getJwtPayload,
   setAccountNameToLocalStorage,
@@ -108,15 +109,16 @@ export class NewsafeCloudAuthenticator extends Authenticator {
         authUrl: signUrl,
       });
       this.users = [user];
-      return this.users;
-    }
-    await this.waitForAuthFlow();
-    const user = await this.getUser();
-    if (user) {
-      this.users = [user];
     } else {
-      this.users = [];
+      await this.waitForAuthFlow();
+      const user = await this.getUser();
+      if (user) {
+        this.users = [user];
+      } else {
+        this.users = [];
+      }
     }
+
     return this.users;
   };
 
@@ -129,7 +131,8 @@ export class NewsafeCloudAuthenticator extends Authenticator {
   }
 
   private isLoggedIn = () => {
-    return !!getJwtFromLocalStorage();
+    const expirationDate = getJwtExpirationDate();
+    return !!expirationDate && expirationDate > new Date();
   };
 
   private waitForAuthFlow = async () => {
