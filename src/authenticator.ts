@@ -84,7 +84,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
 
   shouldInvalidateAfter = () => {
     const payload = getJwtPayload();
-    let invalidateAfter = 0;
+    let invalidateAfter = 30 * 60;
     if (payload) {
       const expires = new Date(payload.config.expires);
       const diffInSeconds = (expires.getTime() - Date.now()) / 1000;
