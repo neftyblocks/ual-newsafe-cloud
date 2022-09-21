@@ -56,3 +56,21 @@ handleTokenResponse();
 ```
 
 The function will fetch the token from the query params, send it to your application's original page and close the current page.
+
+## Development
+
+To run the builder in development mode you can use:
+
+```sh
+yarn dev
+# or
+npm run dev
+```
+
+this will rebuild the code anytime a file changes.
+
+### Release
+
+To release you can create a new git tag, this will trigger the publish action in github actions.
+
+Make sure the version in package.json is updated with the new version when creating the tag.
