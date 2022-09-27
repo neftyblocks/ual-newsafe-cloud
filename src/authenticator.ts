@@ -199,7 +199,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
       ...opts,
       headers: {
         ...opts?.headers,
-        Authorization: `unsid ${jwt}`,
+        Authorization: `newsafe ${jwt}`,
       },
     });
   }
