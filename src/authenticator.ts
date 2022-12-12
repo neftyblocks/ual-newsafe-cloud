@@ -182,7 +182,7 @@ export class NewsafeCloudAuthenticator extends Authenticator {
 
   private getUser = async (): Promise<User> => {
     const data = await this.fetch<NGUserResponse>(
-      `${this.newgraphUrl}/creator/user/current`
+      `${this.newgraphUrl}/v1/user/current`
     );
     setAccountNameToLocalStorage(data.username);
     const { chainId, signUrl } = this;
