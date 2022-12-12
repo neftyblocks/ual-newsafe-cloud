@@ -1,6 +1,6 @@
 {
   "name": "ual-newsafe-cloud",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "UAL for newsafe cloud wallet",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
